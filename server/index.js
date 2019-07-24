@@ -104,6 +104,7 @@ const schema = buildSchema(`
 
     CreateAttack(attack: AttackInput!, category: String!): Attack
     ChangeAttack(name: String!, category: String!, atkData: AttackInput!): Attack
+    DeleteAttack(name: String!, category: String!): Attack
   }
 `);
 const findPokemon = ({ name, id }) => {
@@ -200,6 +201,14 @@ const root = {
     const attack = FindAttack(name, category);
     _.extend(attack, atkData);
     return attack;
+  },
+  DeleteAttack: ({ name, category }) => {
+    const index = data.attacks[category].indexOf(FindAttack(name, category));
+    let deletedAttack;
+    if (index > -1) {
+      deletedAttack = data.attacks[category].splice(index, 1)[0];
+    }
+    return deletedAttack ? deletedAttack : null;
   },
 };
 
